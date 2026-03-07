@@ -22,7 +22,7 @@ resource "aws_cognito_user_pool" "example" {
 resource "random_password" "cognito_pass" {
   length           = 16
   special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
+  override_special = "!$%*-_=+.@"
   min_numeric      = 1
   min_special      = 1
   min_upper        = 1
