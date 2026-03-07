@@ -10,8 +10,8 @@ export const handler = async (event) => {
             launchType: "FARGATE",
             networkConfiguration: {
                 awsvpcConfiguration: {
-                    subnets: ["process.env.SUBNET"],
-                    securityGroups: ["process.env.SG"],
+                    subnets: [process.env.SUBNET],
+                    securityGroups: [process.env.SG],
                     assignPublicIp: "ENABLED",
                 },
             },
