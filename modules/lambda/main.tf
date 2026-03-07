@@ -109,6 +109,13 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
       },
       {
         Action = [
+          "sns:Publish"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:sns:us-east-1:637226132752:Candidate-Verification-Topic"
+      },
+      {
+        Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
           "logs:PutLogEvents"

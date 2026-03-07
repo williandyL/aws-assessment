@@ -57,12 +57,15 @@ call_endpoint() {
     fi
 }
 
-call_endpoint "$API_R1/greet" "Region 1 Greet" "us-east-1" &
-call_endpoint "$API_R2/greet" "Region 2 Greet" "eu-west-1" &
-waits
+call_endpoint "$API_R1/greet" "Region 1 Greet" "us-east-1"
 
-call_endpoint "$API_R1/dispatch" "Region 1 Dispatch" "us-east-1" &
-call_endpoint "$API_R2/dispatch" "Region 2 Dispatch" "eu-west-1" &
-wait
+# 2. Test Region 2 Greet
+call_endpoint "$API_R2/greet" "Region 2 Greet" "eu-west-1"
+
+# 3. Test Region 1 Dispatch
+call_endpoint "$API_R1/dispatch" "Region 1 Dispatch" "us-east-1"
+
+# 4. Test Region 2 Dispatch
+call_endpoint "$API_R2/dispatch" "Region 2 Dispatch" "eu-west-1"
 
 echo -e "Validation Complete."

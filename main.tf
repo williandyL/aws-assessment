@@ -56,11 +56,6 @@ output "client_id" {
   value = module.cognito.cognito_client_id
 }
 
-
-module "iam" {
-  source = "./modules/iam"
-}
-
 module "vpc-us" {
   source = "./modules/vpc"
   subnet = "12.0.1.0/24"
@@ -151,7 +146,6 @@ module "ecs-us" {
   providers = {
     aws = aws.US
   }
-  depends_on = [module.iam]
 }
 
 module "ecs-irland" {
@@ -161,5 +155,4 @@ module "ecs-irland" {
   providers = {
     aws = aws.Ireland
   }
-  depends_on = [module.iam]
 }
