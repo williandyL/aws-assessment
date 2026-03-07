@@ -1,0 +1,76 @@
+name: "IaC Deployment & Validation"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  terraform:
+    name: "Terraform Action"
+    runs-on: ubuntu-latest
+    environment: aws-assessment
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Run tfsec (Security Scan)
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          soft_fail: false
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
+
+      - name: Capture Terraform Outputs
+        id: tf_outputs
+        run: |
+          # 1. Get raw values from Terraform
+          USERNAME=$(terraform output -raw test_username)
+          PASSWORD=$(terraform output -raw test_password)
+          CLIENT_ID=$(terraform output -raw client_id)
+          API_R1=$(terraform output -raw api-gateway-us-url)
+          API_R2=$(terraform output -raw api-gateway-irland-url)
+          COGNITO_REGION=$(terraform output -raw cognito-region)
+
+          # 2. Tell GitHub Actions to mask these values in logs
+          echo "::add-mask::$USER"
+          echo "::add-mask::$PASS"
+
+          # 3. Save to Environment Variables for later steps
+          echo "USERNAME=$USERNAME" >> $GITHUB_ENV
+          echo "PASSWORD=$PASSWORD" >> $GITHUB_ENV
+          echo "CLIENT_ID=$CLIENT_ID" >> $GITHUB_ENV
+          echo "API_R1=$API_R1" >> $GITHUB_ENV
+          echo "API_R2=$API_R2" >> $GITHUB_ENV
+          echo "COGNITO_REGION=$COGNITO_REGION" >> $GITHUB_ENV
+
+      - name: Run Post-Deployment Tests
+        run: |
+          chmod +x ./scripts/test-deploy.sh
+          ./scripts/test-deploy.sh
