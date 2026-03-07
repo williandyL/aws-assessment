@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "GreetingLogs" {
   stream_view_type = "NEW_AND_OLD_IMAGES"
 
   attribute {
-    name = "TestTableHashKey"
+    name = "id"
     type = "S"
   }
 
