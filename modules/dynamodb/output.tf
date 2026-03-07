@@ -16,7 +16,7 @@ output "replica_arns_list" {
 
 locals {
   replica_arns = [
-    for r in aws_dynamodb_table.GreetingLogs.replica : 
+    for r in aws_dynamodb_table.GreetingLogs.replica :
     replace(aws_dynamodb_table.GreetingLogs.arn, data.aws_region.current.name, r.region_name)
   ]
 }

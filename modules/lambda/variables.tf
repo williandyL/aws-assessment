@@ -23,12 +23,12 @@ variable "dynamodb_arn" {
   nullable = false
 }
 
-variable "region"{
-  type = string
+variable "region" {
+  type     = string
   nullable = false
 }
 
 variable "task_definition" {
-  type = string
+  type     = string
   nullable = false
 }

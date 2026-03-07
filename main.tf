@@ -80,26 +80,26 @@ module "vpc-irland" {
 }
 
 module "lambda-irland" {
-  source       = "./modules/lambda"
-  ecs_sg       = module.vpc-irland.sg
-  ecs_subnet   = module.vpc-irland.subnet
+  source                    = "./modules/lambda"
+  ecs_sg                    = module.vpc-irland.sg
+  ecs_subnet                = module.vpc-irland.subnet
   aws_cognito_user_pool_arn = module.cognito.aws_cognito_user_pool_arn
-  dynamodb_arn = module.dynamodb.replica_arns_list[0]
-  region = "Irland"
-  task_definition = module.ecs-irland.task_definition
+  dynamodb_arn              = module.dynamodb.replica_arns_list[0]
+  region                    = "Irland"
+  task_definition           = module.ecs-irland.task_definition
   providers = {
     aws = aws.Ireland
   }
 }
 
 module "lambda-us" {
-  source       = "./modules/lambda"
-  ecs_sg       = module.vpc-us.sg
-  ecs_subnet   = module.vpc-us.subnet
+  source                    = "./modules/lambda"
+  ecs_sg                    = module.vpc-us.sg
+  ecs_subnet                = module.vpc-us.subnet
   aws_cognito_user_pool_arn = module.cognito.aws_cognito_user_pool_arn
-  dynamodb_arn = module.dynamodb.db_arn
-  region = "US"
-  task_definition = module.ecs-us.task_definition
+  dynamodb_arn              = module.dynamodb.db_arn
+  region                    = "US"
+  task_definition           = module.ecs-us.task_definition
   providers = {
     aws = aws.US
   }

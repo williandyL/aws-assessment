@@ -14,7 +14,7 @@ output "cognito_test_password" {
 }
 
 output "cognito_client_id" {
-  value     = aws_cognito_user_pool_client.client.id
+  value = aws_cognito_user_pool_client.client.id
 }
 
 output "cognito_region" {

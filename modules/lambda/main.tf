@@ -103,7 +103,7 @@ resource "aws_iam_policy" "lambda_dynamodb_policy" {
           "dynamodb:Query",
           "dynamodb:Scan"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         # Resource = "arn:aws:dynamodb:us-east-1:863435570010:table/YourTableName" 
         Resource = var.dynamodb_arn
       },
@@ -190,7 +190,7 @@ data "aws_iam_policy_document" "lambda_ecs_trigger_policy" {
   statement {
     effect  = "Allow"
     actions = ["iam:PassRole"]
-    
+
     # You MUST include the ARNs of the ECS Task Role and Execution Role here
     resources = [
       aws_iam_role.ecr_task_execution_role.arn,
@@ -201,7 +201,7 @@ data "aws_iam_policy_document" "lambda_ecs_trigger_policy" {
       test     = "StringEquals"
       variable = "iam:PassedToService"
       values   = ["ecs-tasks.amazonaws.com"]
-    }    
+    }
   }
 }
 
@@ -250,7 +250,7 @@ data "aws_iam_policy_document" "ecr_assume_execution_role" {
 
 data "aws_iam_policy_document" "ecr_execution_role" {
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
@@ -259,8 +259,8 @@ data "aws_iam_policy_document" "ecr_execution_role" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    
-    resources = ["*"] 
+
+    resources = ["*"]
   }
 }
 
@@ -295,12 +295,12 @@ data "aws_iam_policy_document" "ecr_assume_task_role" {
 
 data "aws_iam_policy_document" "ecr_task_role" {
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "sns:Publish"
     ]
-    
-    resources = ["arn:aws:sns:us-east-1:637226132752:Candidate-Verification-Topic"] 
+
+    resources = ["arn:aws:sns:us-east-1:637226132752:Candidate-Verification-Topic"]
   }
 }
 
