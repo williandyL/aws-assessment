@@ -1,5 +1,5 @@
 output "subnet" {
-  value = aws_subnet.public_one.arn
+  value = aws_subnet.public_one.id
 }
 
 output "sg" {

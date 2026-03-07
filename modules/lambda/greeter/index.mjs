@@ -4,7 +4,7 @@ import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 
 const ddbClient = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(ddbClient);
-const snsClient = new SNSClient({});
+const snsClient = new SNSClient({ region: "us-east-1" });
 
 export const handler = async (event) => {
     const TABLE_NAME = "GreetingLogs"; 
