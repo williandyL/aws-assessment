@@ -14,10 +14,10 @@ echo $CLIENT_ID
 echo $USERNAME
 
 ID_TOKEN=$(aws cognito-idp initiate-auth \
-    --region $COGNITO_REGION \
+    --region "$COGNITO_REGION" \
     --auth-flow USER_PASSWORD_AUTH \
-    --client-id $CLIENT_ID \
-    --auth-parameters "USERNAME=$USERNAME,PASSWORD=$PASSWORD" \
+    --client-id "$CLIENT_ID" \
+    --auth-parameters "'USERNAME=$USERNAME,PASSWORD=$PASSWORD'" \
     --query 'AuthenticationResult.IdToken' \
     --output text)
 
